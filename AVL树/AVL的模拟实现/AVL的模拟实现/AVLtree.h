@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include<assert.h>
 using namespace std;
 
 //*
@@ -30,21 +31,21 @@ template<class T>
 class BST
 {
 public:
-	typedef BST_Node<T> Node;
+	typedef BST_Node<T>  Node;
 	//*左单旋
-	BST_Node* lrotate(BST_Node*ronode)
+	Node* lrotate(Node*ronode)
 	{
-		BST_Node* subr = ronode->_right;
-		BST_Node* subrl = subr->_left;
+		Node* subr = ronode->_right;
+		Node* subrl = subr->_left;
 		ronode->_right = subrl;
 		subr->_right = ronode;
 
 		//*调整三个节点的双亲节点
-		BST_Node* ronodep=ronode->_parent;
+		Node* ronodep=ronode->_parent;
 		if (ronode == ronodep->_left)
 			ronodep->_left = subr;
 		else
-			ronofr->_right = subr;
+			ronodep->_right = subr;
 
 		subr->_parent = ronodep;
 		subrl->_parent = ronode;
@@ -53,18 +54,18 @@ public:
 	}
 
 	//*右单旋
-	BST_Node* rrotate(BST_Node* ronode)
+	Node* rrotate(Node* ronode)
 	{
-		BST_Node* subl = ronode->_left;
-		BST_Node* sublr = subl->_right;
+		Node* subl = ronode->_left;
+		Node* sublr = subl->_right;
 		ronode->_left = sublr;
 		subl->_left = ronode;
 
-		BST_Node* ronodep = ronode->_parent;
+		Node* ronodep = ronode->_parent;
 		if (ronode == ronodep->_left)
 			ronodep->_left = subl;
 		else
-			ronofr->_right = subl;
+			ronodep->_right = subl;
 
 		subl->_parent = ronodep;
 		sublr->_parent = ronode;
@@ -102,54 +103,77 @@ public:
 				return false;
 			}
 		}
-
 		//插入
 		if (parent->_key > key)
 		{
 			parent->_left = newnode;
 			newnode->_parent = parent;
+			parent->_bf--;
 		}
 		else
 		{
 			parent->_right = newnode;
 			newnode->_parent = parent;
+			parent->_bf++;
 		}
 
 		//插入元素之后进行平衡因子的检查
 		cur = newnode;
 		while (cur!=nullptr)
 		{
-			if (cur == parent->_right)
-				parent->_bf++;
-			else
-				parent->_bf--;
-
+			
+			if(parent==nullptr)
+				return true;
 			if (parent->_bf == 0)
 			{
 				break;
 			}
-			if else(parent->_bf == 1 || parent->_bf == -1)
+			else if(parent->_bf == 1 || parent->_bf == -1)
 			{
 				cur = parent;
 				parent = parent->_parent;
+				if (cur == parent->_left)
+					parent->_bf--;
+				else
+					parent->_bf++;
 			}
 			else if(parent->_bf == 2 || parent->_bf == -2)
 			{
 				if (parent->_bf == 2 && parent->_right->_bf == 1)
 				{
+					int mark = 0;
+
+					if (parent == _root)
+						mark = 1;
 					//调用左旋
 					parent=lrotate(parent);
 					parent->_bf = 0;
 					parent->_left->_bf = 0;
+
+					if (mark == 1)
+						_root = parent;
 				}
 				else if (parent->_bf == -2 && parent->_left->_bf == -1)
 				{
+					int mark = 0;
+
+					if (parent == _root)
+						mark = 1;
+
 					parent = lrotate(parent);
 					parent->_bf = 0;
 					parent->_right->_bf = 0;
+
+					if (mark == 1)
+						_root = parent;
 				}
 				else if (parent->_bf == 2 && parent->_right->_bf == -1)
 				{
+					int mark = 0;
+
+					if (parent == _root)
+						mark = 1;
+
 					int judbf = parent->_right->_left->_bf;
 					//*1.右单旋
 					parent=rrotate(parent->_right);
@@ -159,17 +183,25 @@ public:
 					parent->_bf = 0;
 					if (judbf == 1)
 					{
-						parent->_right = 0;
-						parent->_left = -1;
+						parent->_right->_bf = 0;
+						parent->_left->_bf = -1;
 					}
 					else
 					{
-						parent->_left = 0;
-						parent->_right = 1;
+						parent->_left->_bf = 0;
+						parent->_right->_bf = 1;
 					}
+
+					if (mark == 1)
+						_root = parent;
 				}
 				else if (parent->_bf == -2 && parent->_right->_bf == 1)
 				{
+					int mark = 0;
+
+					if (parent == _root)
+						mark = 1;
+
 					int judbf = parent->_left->_right->_bf;
 					//*1.左单旋
 					parent = lrotate(parent->_right);
@@ -179,14 +211,16 @@ public:
 					parent->_bf = 0;
 					if (judbf == 1)
 					{
-						parent->_right = 0;
-						parent->_left = -1;
+						parent->_right->_bf = 0;
+						parent->_left->_bf = -1;
 					}
 					else
 					{
-						parent->_left = 0;
-						parent->_right = 1;
+						parent->_left->_bf = 0;
+						parent->_right->_bf = 1;
 					}
+					if (mark == 1)
+						_root = parent;
 				}
 			}
 			else
@@ -305,6 +339,15 @@ public:
 	{
 		_InOrder(_root);
 	}
+
+	void InOrderbf()
+	{
+		_InOrderbf(_root);
+	}
+	
+
+private:
+	Node* _root = nullptr;
 	void _InOrder(Node* root)
 	{
 		if (root == nullptr)
@@ -314,6 +357,12 @@ public:
 		_InOrder(root->_right);
 	}
 
-private:
-	Node* _root = nullptr;
+	void _InOrderbf(Node* root)
+	{
+		if (root == nullptr)
+			return;
+		_InOrderbf(root->_left);
+		cout << root->_bf << " ";
+		_InOrderbf(root->_right);
+	}
 };

@@ -38,16 +38,19 @@ public:
 		Node* subr = ronode->_right;
 		Node* subrl = subr->_left;
 		ronode->_right = subrl;
-		subr->_right = ronode;
+		subr->_left = ronode;
 
 		//*调整三个节点的双亲节点
-		Node* ronodep=ronode->_parent;
-		if (ronode == ronodep->_left)
-			ronodep->_left = subr;
-		else
-			ronodep->_right = subr;
-
+		Node* ronodep = ronode->_parent;
+		if (ronodep != nullptr)
+		{
+			if (ronode == ronodep->_left)
+				ronodep->_left = subr;
+			else
+				ronodep->_right = subr;
+		}
 		subr->_parent = ronodep;
+		if(subrl!=nullptr)
 		subrl->_parent = ronode;
 		ronode->_parent = subr;
 		return subr;
@@ -59,15 +62,20 @@ public:
 		Node* subl = ronode->_left;
 		Node* sublr = subl->_right;
 		ronode->_left = sublr;
-		subl->_left = ronode;
+		subl->_right = ronode;
 
 		Node* ronodep = ronode->_parent;
-		if (ronode == ronodep->_left)
-			ronodep->_left = subl;
-		else
-			ronodep->_right = subl;
+		if (ronodep != nullptr)
+		{
+			if (ronode == ronodep->_left)
+				ronodep->_left = subl;
+			else
+				ronodep->_right = subl;
+		}
+		
 
 		subl->_parent = ronodep;
+		if (sublr != nullptr)
 		sublr->_parent = ronode;
 		ronode->_parent = subl;
 		return subl;
@@ -117,25 +125,32 @@ public:
 			parent->_bf++;
 		}
 
-		//插入元素之后进行平衡因子的检查
 		cur = newnode;
+		//插入元素之后进行平衡因子的检查
 		while (cur!=nullptr)
 		{
-			
-			if(parent==nullptr)
+			if (parent == nullptr)
 				return true;
+
 			if (parent->_bf == 0)
 			{
 				break;
 			}
 			else if(parent->_bf == 1 || parent->_bf == -1)
 			{
-				cur = parent;
-				parent = parent->_parent;
-				if (cur == parent->_left)
-					parent->_bf--;
+				if (parent->_parent == nullptr)
+					return true;
 				else
-					parent->_bf++;
+				{
+					cur = parent;
+					parent = parent->_parent;
+					if (cur == parent->_left)
+						parent->_bf--;
+					else
+						parent->_bf++;
+				}
+				
+				
 			}
 			else if(parent->_bf == 2 || parent->_bf == -2)
 			{
@@ -195,7 +210,7 @@ public:
 					if (mark == 1)
 						_root = parent;
 				}
-				else if (parent->_bf == -2 && parent->_right->_bf == 1)
+				else if (parent->_bf == -2 && parent->_left->_bf == 1)
 				{
 					int mark = 0;
 
@@ -204,7 +219,7 @@ public:
 
 					int judbf = parent->_left->_right->_bf;
 					//*1.左单旋
-					parent = lrotate(parent->_right);
+					parent = lrotate(parent->_left);
 					//*2.右单旋转
 					parent = rrotate(parent->_parent);
 
@@ -340,11 +355,6 @@ public:
 		_InOrder(_root);
 	}
 
-	void InOrderbf()
-	{
-		_InOrderbf(_root);
-	}
-	
 
 private:
 	Node* _root = nullptr;
@@ -353,16 +363,7 @@ private:
 		if (root == nullptr)
 			return;
 		_InOrder(root->_left);
-		cout << root->_key << " ";
+		cout << "("<<root->_key <<","<< root->_bf << ")" << " ";
 		_InOrder(root->_right);
-	}
-
-	void _InOrderbf(Node* root)
-	{
-		if (root == nullptr)
-			return;
-		_InOrderbf(root->_left);
-		cout << root->_bf << " ";
-		_InOrderbf(root->_right);
 	}
 };

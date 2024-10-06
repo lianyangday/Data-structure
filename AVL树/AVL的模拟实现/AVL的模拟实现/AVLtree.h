@@ -175,7 +175,7 @@ public:
 					if (parent == _root)
 						mark = 1;
 
-					parent = lrotate(parent);
+					parent = rrotate(parent);
 					parent->_bf = 0;
 					parent->_right->_bf = 0;
 
@@ -201,12 +201,16 @@ public:
 						parent->_right->_bf = 0;
 						parent->_left->_bf = -1;
 					}
-					else
+					else if(judbf == -1)
 					{
 						parent->_left->_bf = 0;
 						parent->_right->_bf = 1;
 					}
-
+					else
+					{
+						parent->_left->_bf = 0;
+						parent->_right->_bf = 0;
+					}
 					if (mark == 1)
 						_root = parent;
 				}
@@ -229,10 +233,15 @@ public:
 						parent->_right->_bf = 0;
 						parent->_left->_bf = -1;
 					}
-					else
+					else if(judbf == -1)
 					{
 						parent->_left->_bf = 0;
 						parent->_right->_bf = 1;
+					}
+					else
+					{
+						parent->_left->_bf = 0;
+						parent->_right->_bf = 0;
 					}
 					if (mark == 1)
 						_root = parent;

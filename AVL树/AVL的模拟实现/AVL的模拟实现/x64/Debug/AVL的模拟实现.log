@@ -1,3 +1,3 @@
 ﻿  test.cpp
-D:\github代码存储\Data-structure\AVL树\AVL的模拟实现\AVL的模拟实现\AVLtree.h(246,1): warning C4715: “BST<int>::Insert”: 不是所有的控件路径都返回值
+D:\github代码存储\Data-structure\AVL树\AVL的模拟实现\AVL的模拟实现\AVLtree.h(255,1): warning C4715: “BST<int>::Insert”: 不是所有的控件路径都返回值
   AVL的模拟实现.vcxproj -> D:\github代码存储\Data-structure\AVL树\AVL的模拟实现\x64\Debug\AVL的模拟实现.exe

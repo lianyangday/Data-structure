@@ -1,3 +1,4 @@
+
 #pragma once
 #include<iostream>
 #include<assert.h>
@@ -42,6 +43,7 @@ public:
 
 		//*调整三个节点的双亲节点
 		Node* ronodep = ronode->_parent;
+
 		if (ronodep != nullptr)
 		{
 			if (ronode == ronodep->_left)
@@ -49,10 +51,17 @@ public:
 			else
 				ronodep->_right = subr;
 		}
+		else
+		{
+			_root = subr;
+		}
 		subr->_parent = ronodep;
 		if(subrl!=nullptr)
 		subrl->_parent = ronode;
 		ronode->_parent = subr;
+		subr->_bf = 0;
+		ronode->_bf = 0;
+
 		return subr;
 	}
 
@@ -72,14 +81,79 @@ public:
 			else
 				ronodep->_right = subl;
 		}
+		else
+		{
+			_root = subl;
+		}
 		
-
 		subl->_parent = ronodep;
 		if (sublr != nullptr)
 		sublr->_parent = ronode;
 		ronode->_parent = subl;
+		subl->_bf = 0;
+		ronode->_bf = 0;
+
 		return subl;
 	}
+
+	Node* rlrotate(Node* ronode)
+	{
+		int judbf = ronode->_right->_left->_bf;
+		//*1.右单旋
+		ronode = rrotate(ronode->_right);
+		//*2.左单旋转
+		ronode = lrotate(ronode->_parent);
+
+		ronode->_bf = 0;
+		if (judbf == 1)
+		{
+			ronode->_right->_bf = 0;
+			ronode->_left->_bf = -1;
+		}
+		else if (judbf == -1)
+		{
+			ronode->_left->_bf = 0;
+			ronode->_right->_bf = 1;
+		}
+		else
+		{
+			ronode->_left->_bf = 0;
+			ronode->_right->_bf = 0;
+		}
+
+		return ronode;
+	}
+
+	Node* lrrotate(Node* ronode)
+	{
+		int judbf = ronode->_left->_right->_bf;
+		//*1.左单旋
+		ronode = lrotate(ronode->_left);
+		//*2.右单旋转
+		ronode = rrotate(ronode->_parent);
+
+		ronode->_bf = 0;
+		if (judbf == 1)
+		{
+			ronode->_right->_bf = 0;
+			ronode->_left->_bf = -1;
+		}
+		else if (judbf == -1)
+		{
+			ronode->_left->_bf = 0;
+			ronode->_right->_bf = 1;
+		}
+		else
+		{
+			ronode->_left->_bf = 0;
+			ronode->_right->_bf = 0;
+		}
+
+		return ronode;
+	}
+
+
+
 
 	//*插入功能
 	bool Insert(const T& key)
@@ -108,6 +182,7 @@ public:
 			else
 			{
 				//出现重复的数据,插入失败
+				//cout << "重复" << endl;
 				return false;
 			}
 		}
@@ -116,135 +191,61 @@ public:
 		{
 			parent->_left = newnode;
 			newnode->_parent = parent;
-			parent->_bf--;
 		}
 		else
 		{
 			parent->_right = newnode;
 			newnode->_parent = parent;
-			parent->_bf++;
 		}
 
 		cur = newnode;
 		//插入元素之后进行平衡因子的检查
-		while (cur!=nullptr)
+		while (parent)
 		{
-			if (parent == nullptr)
-				return true;
+
+			if (parent->_left == cur)
+			{
+				parent->_bf--;
+			}
+			else
+			{
+				parent->_bf++;
+			}
 
 			if (parent->_bf == 0)
 			{
 				break;
 			}
 			else if(parent->_bf == 1 || parent->_bf == -1)
-			{
-				if (parent->_parent == nullptr)
-					return true;
-				else
-				{
+			{	
 					cur = parent;
 					parent = parent->_parent;
-					if (cur == parent->_left)
-						parent->_bf--;
-					else
-						parent->_bf++;
-				}
-				
-				
 			}
-			else if(parent->_bf == 2 || parent->_bf == -2)
+			else if (parent->_bf == 2 || parent->_bf == -2)
 			{
 				if (parent->_bf == 2 && parent->_right->_bf == 1)
 				{
-					int mark = 0;
-
-					if (parent == _root)
-						mark = 1;
 					//调用左旋
-					parent=lrotate(parent);
-					parent->_bf = 0;
-					parent->_left->_bf = 0;
-
-					if (mark == 1)
-						_root = parent;
+					lrotate(parent);
+					
+					
 				}
 				else if (parent->_bf == -2 && parent->_left->_bf == -1)
 				{
-					int mark = 0;
-
-					if (parent == _root)
-						mark = 1;
-
-					parent = rrotate(parent);
-					parent->_bf = 0;
-					parent->_right->_bf = 0;
-
-					if (mark == 1)
-						_root = parent;
+					rrotate(parent);
+					
 				}
 				else if (parent->_bf == 2 && parent->_right->_bf == -1)
 				{
-					int mark = 0;
-
-					if (parent == _root)
-						mark = 1;
-
-					int judbf = parent->_right->_left->_bf;
-					//*1.右单旋
-					parent=rrotate(parent->_right);
-					//*2.左单旋转
-					parent = lrotate(parent->_parent);
-
-					parent->_bf = 0;
-					if (judbf == 1)
-					{
-						parent->_right->_bf = 0;
-						parent->_left->_bf = -1;
-					}
-					else if(judbf == -1)
-					{
-						parent->_left->_bf = 0;
-						parent->_right->_bf = 1;
-					}
-					else
-					{
-						parent->_left->_bf = 0;
-						parent->_right->_bf = 0;
-					}
-					if (mark == 1)
-						_root = parent;
+					//*先右旋再左旋
+					rlrotate(parent);
+					
 				}
 				else if (parent->_bf == -2 && parent->_left->_bf == 1)
 				{
-					int mark = 0;
+					//*先左旋再右旋
+					lrrotate(parent);
 
-					if (parent == _root)
-						mark = 1;
-
-					int judbf = parent->_left->_right->_bf;
-					//*1.左单旋
-					parent = lrotate(parent->_left);
-					//*2.右单旋转
-					parent = rrotate(parent->_parent);
-
-					parent->_bf = 0;
-					if (judbf == 1)
-					{
-						parent->_right->_bf = 0;
-						parent->_left->_bf = -1;
-					}
-					else if(judbf == -1)
-					{
-						parent->_left->_bf = 0;
-						parent->_right->_bf = 1;
-					}
-					else
-					{
-						parent->_left->_bf = 0;
-						parent->_right->_bf = 0;
-					}
-					if (mark == 1)
-						_root = parent;
 				}
 			}
 			else
@@ -252,7 +253,53 @@ public:
 				assert(1);
 			}
 		}
+
+		return true;
 	}
+
+	int height(Node* root)
+	{
+		if(root == nullptr)
+			return 0;
+
+		int heigthright = height(root->_right);
+		int heigthleft = height(root->_left);
+
+		return heigthright > heigthleft ? heigthright + 1 : heigthleft + 1;
+	}
+
+	int Height()
+	{
+		return height(_root);
+	}
+	bool Isbalance()
+	{
+		return isbalance(_root);
+	}
+	//判断是否平衡
+	bool isbalance(Node* root)
+	{
+		if (root == nullptr)
+			return true;
+		int heightright = height(root->_right);
+		int heightleft = height(root->_left);
+		int diff = heightright - heightleft;
+
+		if (abs(diff) > 2)
+		{
+			cout << "平衡因子错误" << endl;
+			return false;
+		}
+
+		if (root->_bf != diff)
+		{
+			cout << "平衡因子错误" << endl;
+			return false;
+		}
+
+		return isbalance(root->_right) && isbalance(root->_left);
+	}
+
 	//*查找功能
 	Node* Find(const T& key)
 	{
@@ -277,87 +324,87 @@ public:
 		}
 		return nullptr;
 	}
-	//删除功能
-	bool Erase(const T& key)
-	{
-		Node* cur = _root;
-		Node* parent = cur;
-		while (cur != nullptr)
-		{
-			if (cur->_key > key)
-			{
-				parent = cur;
-				cur = cur->_left;
-			}
-			else if (cur->_key < key)
-			{
-				parent = cur;
-				cur = cur->_right;
-			}
-			else
-			{
-				break;
-			}
-		}
+	////删除功能（待修改）
+	//bool Erase(const T& key)
+	//{
+	//	Node* cur = _root;
+	//	Node* parent = cur;
+	//	while (cur != nullptr)
+	//	{
+	//		if (cur->_key > key)
+	//		{
+	//			parent = cur;
+	//			cur = cur->_left;
+	//		}
+	//		else if (cur->_key < key)
+	//		{
+	//			parent = cur;
+	//			cur = cur->_right;
+	//		}
+	//		else
+	//		{
+	//			break;
+	//		}
+	//	}
 
-		//*没有找到该数据
-		if (cur == nullptr)
-		{
-			return false;
-		}
+	//	//*没有找到该数据
+	//	if (cur == nullptr)
+	//	{
+	//		return false;
+	//	}
 
-		//*找到该数据
+	//	//*找到该数据
 
-		//*1.数据所在的节点没有子节点，或者只有一个子节点
-		if (cur->_left == nullptr || cur->_right == nullptr)
-		{
-			if (parent->_key > key)
-			{
-				if (cur->_left == nullptr)
-					parent->_left = cur->_right;
-				else
-					parent->_left = cur->_left;
-			}
-			else if (parent->_key < key)
-			{
-				if (cur->_left == nullptr)
-					parent->_right = cur->_right;
-				else
-					parent->_right = cur->_left;
-			}
-			else
-			{
-				if (cur->_left == nullptr)
-					_root = cur->_right;
-				else
-					_root = cur->_left;
-			}
-			delete cur;
-		}
+	//	//*1.数据所在的节点没有子节点，或者只有一个子节点
+	//	if (cur->_left == nullptr || cur->_right == nullptr)
+	//	{
+	//		if (parent->_key > key)
+	//		{
+	//			if (cur->_left == nullptr)
+	//				parent->_left = cur->_right;
+	//			else
+	//				parent->_left = cur->_left;
+	//		}
+	//		else if (parent->_key < key)
+	//		{
+	//			if (cur->_left == nullptr)
+	//				parent->_right = cur->_right;
+	//			else
+	//				parent->_right = cur->_left;
+	//		}
+	//		else
+	//		{
+	//			if (cur->_left == nullptr)
+	//				_root = cur->_right;
+	//			else
+	//				_root = cur->_left;
+	//		}
+	//		delete cur;
+	//	}
 
-		//*2.数据所在的节点，友两个子节点
-		else
-		{
-			//找到需要交换的叶子结点
-			Node* tar = cur->_right;
-			Node* tarparent = cur;
-			while (tar->_left != nullptr)
-			{
-				tarparent = tar;
-				tar = tar->_left;
-			}
+	//	//*2.数据所在的节点，友两个子节点
+	//	else
+	//	{
+	//		//找到需要交换的叶子结点
+	//		Node* tar = cur->_right;
+	//		Node* tarparent = cur;
+	//		while (tar->_left != nullptr)
+	//		{
+	//			tarparent = tar;
+	//			tar = tar->_left;
+	//		}
 
-			//数据进行交换
-			cur->_key = tar->_key;
+	//		//数据进行交换
+	//		cur->_key = tar->_key;
 
-			//对叶子节点进行删除
-			if (tar == cur->_right)
-				tarparent->_right = tar->_right;
-			else
-				tarparent->_left = tar->_right;
-			delete tar;
-		}
-	}
+	//		//对叶子节点进行删除
+	//		if (tar == cur->_right)
+	//			tarparent->_right = tar->_right;
+	//		else
+	//			tarparent->_left = tar->_right;
+	//		delete tar;
+	//	}
+	//}
 	// 中序遍历
 	void InOrder()
 	{
@@ -376,3 +423,6 @@ private:
 		_InOrder(root->_right);
 	}
 };
+
+
+

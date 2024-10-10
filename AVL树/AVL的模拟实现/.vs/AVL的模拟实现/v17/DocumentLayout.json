@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{14F697BA-E3E6-4CF1-A9BB-F5A6E741437C}|AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0.vcxproj|D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{14F697BA-E3E6-4CF1-A9BB-F5A6E741437C}|AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0.vcxproj|solutionrelative:AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{14F697BA-E3E6-4CF1-A9BB-F5A6E741437C}|AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0.vcxproj|D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\test1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{14F697BA-E3E6-4CF1-A9BB-F5A6E741437C}|AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0.vcxproj|solutionrelative:AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\test1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{14F697BA-E3E6-4CF1-A9BB-F5A6E741437C}|AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0.vcxproj|D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{14F697BA-E3E6-4CF1-A9BB-F5A6E741437C}|AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0.vcxproj|solutionrelative:AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,17 +18,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "AVLtree.h",
               "DocumentMoniker": "D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h",
               "RelativeDocumentMoniker": "AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h",
               "ToolTip": "D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h",
               "RelativeToolTip": "AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVLtree.h",
-              "ViewState": "AQIAAEEAAAAAAAAAAAAAAKwBAAAAAAAA",
+              "ViewState": "AQIAAMsAAAAAAAAAAAAzwNcAAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-09-22T10:44:48.616Z",
               "IsPinned": true,
@@ -40,13 +40,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "test1.cpp",
               "DocumentMoniker": "D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\test1.cpp",
               "RelativeDocumentMoniker": "AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\test1.cpp",
               "ToolTip": "D:\\github\u4EE3\u7801\u5B58\u50A8\\Data-structure\\AVL\u6811\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\test1.cpp",
               "RelativeToolTip": "AVL\u7684\u6A21\u62DF\u5B9E\u73B0\\test1.cpp",
-              "ViewState": "AQIAAAwAAAAAAAAAAIAzwBsAAAAAAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAoAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-09T09:11:02.641Z",
               "EditorCaption": ""

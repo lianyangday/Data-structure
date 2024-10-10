@@ -207,9 +207,13 @@ public:
 			{
 				parent->_bf--;
 			}
-			else
+			else if(parent->_right == cur)
 			{
 				parent->_bf++;
+			}
+			else
+			{
+				parent = parent->_parent;
 			}
 
 			if (parent->_bf == 0)
@@ -423,6 +427,5 @@ private:
 		_InOrder(root->_right);
 	}
 };
-
 
 
